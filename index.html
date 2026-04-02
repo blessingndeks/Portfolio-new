@@ -97,6 +97,45 @@
 
 <body
     class="bg-white dark:bg-primary-bg text-gray-900 dark:text-white overflow-x-hidden transition-colors duration-300">
+    <!-- overflow-x:hidden is also enforced via CSS on html+body -->
+    <!-- Page Transition Overlay -->
+    <div id="page-transition-overlay"></div>
+
+    <!-- Mobile Menu Backdrop -->
+    <div id="mobile-backdrop"></div>
+
+    <!-- Glassmorphism Mobile Menu Panel -->
+    <div id="mobile-menu" aria-label="Mobile Navigation">
+        <div class="mobile-menu-blob"></div>
+
+        <!-- X Close Button -->
+        <button id="mobile-close-btn" class="mobile-close-btn" aria-label="Close menu">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <line x1="1.5" y1="1.5" x2="20.5" y2="20.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+                <line x1="20.5" y1="1.5" x2="1.5" y2="20.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+            </svg>
+        </button>
+
+        <!-- Centered Nav Links -->
+        <div class="mobile-menu-inner">
+            <a href="#home"     class="mobile-nav-link">Home</a>
+            <a href="#about"    class="mobile-nav-link">About</a>
+            <a href="#skills"   class="mobile-nav-link">Skills</a>
+            <a href="#projects" class="mobile-nav-link">Projects</a>
+            <a href="#contact"  class="mobile-nav-link">Contact</a>
+        </div>
+
+        <!-- Theme toggle at bottom -->
+        <div class="mobile-theme-row">
+            <span class="mobile-theme-label">🎨 Appearance</span>
+            <div id="mobile-theme-toggle" class="theme-toggle" role="button" aria-label="Toggle dark mode">
+                <div class="theme-toggle-slider">
+                    <span class="theme-icon">🌙</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Background Blobs -->
     <div class="blob blob-purple w-96 h-96 -top-48 -right-48"></div>
     <div class="blob blob-blue w-80 h-80 -bottom-40 -left-40" style="animation-delay: -5s;"></div>
@@ -108,6 +147,8 @@
                 <div class="gradient-text text-2xl font-bold animate-fade-in">Blessing<span
                         class="text-gray-900 dark:text-white">.</span></div>
                 <div class="flex justify-around gap-6">
+                    <!-- Desktop Nav -->
+                    <div class="desktop-nav flex justify-around gap-6">
                     <ul class="flex gap-8 animate-fade-in">
                         <li>
                             <a href="#home"
@@ -156,7 +197,14 @@
                             <span class="theme-icon">🌙</span>
                         </div>
                     </div>
-                </div>
+                    </div>
+
+                    <!-- Hamburger (mobile only) -->
+                    <button id="hamburger-btn" class="hamburger-btn text-gray-900 dark:text-white" aria-label="Toggle navigation">
+                        <span class="hamburger-line"></span>
+                        <span class="hamburger-line"></span>
+                        <span class="hamburger-line"></span>
+                    </button>
             </div>
         </div>
     </nav>
@@ -164,9 +212,9 @@
     <!-- Hero Section -->
     <section class="min-h-screen flex items-center justify-center px-4 pt-20 relative overflow-hidden" id="home">
         <div class="max-w-6xl w-full z-10">
-            <div class="flex flex-col md:flex-row items-center gap-12">
+            <div class="flex flex-col lg:flex-row items-center gap-12">
                 <!-- Left Column - Image -->
-                <div class="flex justify-center md:justify-start flex-shrink-0 gap-20 flex-3">
+                <div class="flex justify-center lg:justify-start flex-shrink-0 gap-20 flex-3">
                     <div class="relative animate-scale-in opacity-0" style="animation-delay: 0.3s;">
                         <div
                             class="absolute inset-0 rounded-full bg-gradient-to-r from-accent-purple to-accent-blue opacity-75 blur-xl animate-pulse">
@@ -175,7 +223,7 @@
                             <div class="gradient-border rounded-full">
                                 <div class="bg-gray-100 dark:bg-primary-card rounded-full overflow-hidden">
                                     <img src="images/mypic.png" alt="Developer Profile"
-                                        class="w-80 h-80 md:w-90 md:h-90 object-fill rounded-full transform hover:scale-105 transition-transform duration-500"
+                                        class="w-48 h-48 sm:w-64 sm:h-64 md:w-72 md:h-72 lg:w-80 lg:h-80 object-fill rounded-full transform hover:scale-105 transition-transform duration-500"
                                         id="profile-image" />
                                 </div>
                             </div>
@@ -184,7 +232,7 @@
                 </div>
 
                 <!-- Right Column - Text Content -->
-                <div class="text-center md:text-left flex-1">
+                <div class="text-center lg:text-left flex-1">
                     <div class="text-accent-purple text-sm uppercase tracking-[0.2em] mb-4 animate-slide-up opacity-0"
                         style="animation-delay: 0.2s;"> —Hello I'M</div>
                     <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 animate-slide-up opacity-0"
@@ -194,7 +242,7 @@
                         style="animation-delay: 0.6s;"> Frontend Developer, UI/UX Enthusiast, Content Strategist &
                         Digital Builder. Building modern web
                         experiences with a focus on performance and accessibility. </p>
-                    <div class="flex gap-4 justify-center md:justify-start flex-wrap animate-slide-up opacity-0"
+                    <div class="flex gap-4 justify-center lg:justify-start flex-wrap animate-slide-up opacity-0"
                         style="animation-delay: 0.8s;"> <a href="#projects"
                             class="gradient-bg px-8 py-3 rounded-lg font-semibold text-white hover:shadow-lg hover:shadow-accent-purple/50 transform hover:scale-105 transition-all duration-300">
                             View Projects </a> <a href="#contact"
@@ -208,9 +256,9 @@
 
     <!-- About Section -->
     <section id="about"
-        class="py-24 px-4 align-items-center bg-gray-50 dark:bg-primary-secondary transition-colors duration-300">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 order-1 md:order-2">
-            <div class="text-center mb-8 ml-20 md:mb-0">
+        class="py-24 px-4 md:px-6 bg-gray-50 dark:bg-primary-secondary transition-colors duration-300">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 order-1 lg:order-2">
+            <div class="text-center mb-8 lg:ml-20 md:mb-0 px-2">
                 <h1 class="reveal text-accent-purple text-3xl uppercase tracking-[0.1em] mb-5">About Me</h1>
                 <p class="about__paragraph text-whitesmoke-700 dark:text-gray-300 text-lg leading-relaxed text-justify mb-4">
                     I’m a Frontend Developer focused on building thoughtful, high-performance digital experiences that
@@ -226,7 +274,7 @@
             </div>
             <!-- Stats Section -->
             <div class="max-w-5xl mx-auto mb-16">
-                <div class="grid grid-cols-2 md:grid-cols-1 gap-5">
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-1 gap-5">
                     <div
                         class="reveal stagger-4 bg-white dark:bg-primary-card p-6 rounded-xl border border-gray-200 dark:border-gray-800 text-center transform hover:scale-105 transition-all duration-300 shadow-lg dark:shadow-none group">
                         <h3 class="text-2xl font-bold gradient-text mb-2 counter-number" data-count="2">0</h3>
@@ -248,7 +296,7 @@
 
 
     <!-- Skills Section -->
-    <section id="skills" class="py-24 px-6">
+    <section id="skills" class="py-24 px-4 md:px-6">
         <div class="max-w-7xl mx-auto">
             <div class="text-center mb-16">
                 <h1 class="reveal text-accent-purple text-3xl uppercase tracking-[0.1em] mb-3 mt-5">Technical Skills
@@ -258,7 +306,7 @@
                 </p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-0 mt-3">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-0 mt-3">
                 <div
                     class="reveal stagger-4 bg-white dark:bg-primary-card p-8 rounded-xl border border-gray-200 dark:border-gray-800 card-hover shadow-lg dark:shadow-none">
                     <h3 class="text-accent-purple text-xl font-bold mb-6 flex items-center gap-2">
@@ -323,7 +371,7 @@
     </section>
 
     <!-- Projects Section -->
-    <section id="projects" class="bg-gray-50 dark:bg-primary-secondary py-24 px-6 transition-colors duration-300">
+    <section id="projects" class="bg-gray-50 dark:bg-primary-secondary py-24 px-4 md:px-6 transition-colors duration-300">
         <div class="max-w-7xl mx-auto">
             <div class="text-center mb-12">
                 <h1 class="reveal text-accent-purple text-3xl uppercase tracking-[0.1em] mb-4">Projects</h1>
@@ -332,7 +380,7 @@
                 </p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <!-- Project 1 -->
                 <div
                     class="reveal stagger-1 project-card bg-white dark:bg-primary-card rounded-xl h-auto overflow-hidden border border-gray-200 dark:border-gray-800 card-hover group shadow-lg dark:shadow-none">
@@ -462,12 +510,80 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Project 5 -->
+                <div
+                    class="reveal stagger-1 project-card bg-white dark:bg-primary-card rounded-xl h-auto overflow-hidden border border-gray-200 dark:border-gray-800 card-hover group shadow-lg dark:shadow-none">
+                    <div
+                        class="bg-gradient-to-br from-accent-purple/30 to-accent-blue/30 flex items-center justify-center text-6xl group-hover:scale-110 transition-transform duration-500">
+                        <img src="images/weathernow.png" alt="Project Thumbnail" class="w-50 h-50 object-cover" />
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Weather Now App </h3>
+                        <p class="text-gray-600 dark:text-gray-400 mb-4 text-sm">
+                            A sleek weather application that provides real-time forecasts and weather updates for any
+                            location, built with pure frontend technologies and responsive design.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-accent-blue/10 text-accent-blue px-3 py-1 rounded-lg text-xs">HTML</span>
+                            <span class="bg-accent-blue/10 text-accent-blue px-3 py-1 rounded-lg text-xs">CSS</span>
+                            <span
+                                class="bg-accent-blue/10 text-accent-blue px-3 py-1 rounded-lg text-xs">JavaScript</span>
+                            <span class="bg-accent-blue/10 text-accent-blue px-3 py-1 rounded-lg text-xs">API
+                                Integration</span>
+                            <span class="bg-accent-blue/10 text-accent-blue px-3 py-1 rounded-lg text-xs">Interactive &
+                                Responsive</span>
+                        </div>
+                        <div class="flex gap-4">
+                            <a href="https://wnow-app.netlify.app/" target="_blank"
+                                class="text-accent-purple hover:text-accent-blue font-semibold text-sm transition-colors duration-300">View
+                                Live →</a>
+                            <a href="https://github.com/blessingndeks/weather-app-main" target="_blank"
+                                class="text-accent-purple hover:text-accent-blue font-semibold text-sm transition-colors duration-300">Source
+                                Code →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 6 -->
+                <div
+                    class="reveal stagger-1 project-card bg-white dark:bg-primary-card rounded-xl h-auto overflow-hidden border border-gray-200 dark:border-gray-800 card-hover group shadow-lg dark:shadow-none">
+                    <div
+                        class="bg-gradient-to-br from-accent-purple/30 to-accent-blue/30 flex items-center justify-center text-6xl group-hover:scale-110 transition-transform duration-500">
+                        <img src="images/multi-form.png" alt="Project Thumbnail" class="w-50 h-50 object-cover" />
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Multi-Step Form</h3>
+                        <p class="text-gray-600 dark:text-gray-400 mb-4 text-sm">
+                            A user-friendly multi-step form with smooth transitions and real-time validation, designed
+                            to enhance user experience and simplify complex data entry processes.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-accent-blue/10 text-accent-blue px-3 py-1 rounded-lg text-xs">HTML</span>
+                            <span class="bg-accent-blue/10 text-accent-blue px-3 py-1 rounded-lg text-xs">CSS</span>
+                            <span
+                                class="bg-accent-blue/10 text-accent-blue px-3 py-1 rounded-lg text-xs">JavaScript</span>
+                            <span class="bg-accent-blue/10 text-accent-blue px-3 py-1 rounded-lg text-xs">Form
+                                Validation</span>
+                            <span class="bg-accent-blue/10 text-accent-blue px-3 py-1 rounded-lg text-xs">Interactive &
+                                Responsive</span>
+                        </div>
+                        <div class="flex gap-4">
+                            <a href="https://game-step-form.netlify.app/" target="_blank"
+                                class="text-accent-purple hover:text-accent-blue font-semibold text-sm transition-colors duration-300">View
+                                Live →</a>
+                            <a href="https://github.com/blessingndeks/multi-step-form-main" target="_blank"
+                                class="text-accent-purple hover:text-accent-blue font-semibold text-sm transition-colors duration-300">Source
+                                Code →</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Contact Section -->
-    <section id="contact" class="py-24 px-6 bg-gray-50 dark:bg-primary-secondary transition-colors duration-300 mt-5">
+    <section id="contact" class="py-24 px-4 md:px-6 bg-gray-50 dark:bg-primary-secondary transition-colors duration-300 mt-5">
         <div class="max-w-7xl mx-auto">
             <div class="text-center mb-16">
                 <h1 class="reveal text-accent-purple text-3xl uppercase tracking-[0.2em] mb-3">Contact</h1>
@@ -477,7 +593,7 @@
                 </p>
             </div>
 
-            <div class="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
                 <!-- Left Column - Contact Info -->
                 <div class="reveal stagger-3">
                     <h3 class="text-2xl font-bold mb-6">Get in Touch</h3>
@@ -490,8 +606,7 @@
                         <div class="flex items-start gap-4">
                             <div
                                 class="w-12 h-12 rounded-lg bg-accent-purple/10 flex items-center justify-center flex-shrink-0">
-                                <a href="mailto:blessinggabbie21@gmail.com"
-                                    class="w-full h-full flex items-center justify-center rounded-lg transition-all duration-300 hover:bg-accent-purple hover:scale-105 group">
+                                <a href="/cdn-cgi/l/email-protection#1f7d737a6c6c767178787e7d7d767a2d2e5f78727e7673317c7072" class="w-full h-full flex items-center justify-center rounded-lg transition-all duration-300 hover:bg-accent-purple hover:scale-105 group">
                                     <svg class="w-6 h-6 text-accent-purple transition-colors duration-300 group-hover:text-white"
                                         fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -647,7 +762,7 @@
     <!-- Footer -->
     <footer
         class="bg-white dark:bg-primary-bg border-t border-gray-200 dark:border-gray-800 py-8 px-6 text-gray-600 dark:text-gray-400 transition-colors duration-300">
-        <span class="flex align-middle justify-between">
+        <span class="flex flex-col lg:flex-row items-center lg:justify-between gap-2 text-center lg:text-left">
             <p>&copy; 2026 Blessing Ndekhedehe. All rights reserved.</p>
             <p class="mt-2 text-sm">Built with <span class="text-accent-purple">Tailwind CSS</span> & <span
                     class="text-accent-blue">Javascript</span></p>
@@ -655,7 +770,5 @@
     </footer>
 
     <script src="script.js"></script>
-    <script src="server.js"></script>
 </body>
-
 </html>

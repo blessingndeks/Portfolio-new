@@ -1,165 +1,970 @@
 @import "tailwindcss";
 
-body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-        
-        .gradient-text {
-            background: linear-gradient(135deg, #8b5cf6, #3b82f6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .gradient-bg {
-            background: linear-gradient(135deg, #8b5cf6, #3b82f6);
-        }
-        
-        .gradient-border {
-            background: linear-gradient(135deg, #8b5cf6, #3b82f6);
-            padding: 2px;
-            border-radius: 0.75rem;
-        }
-        
-        .card-hover {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .card-hover:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 50px rgba(139, 92, 246, 0.3);
-        }
-        
-        .blob {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.15;
-            animation: float 20s infinite ease-in-out;
-        }
-        
-        .blob-purple {
-            background: radial-gradient(circle, #8b5cf6, transparent);
-        }
-        
-        .blob-blue {
-            background: radial-gradient(circle, #3b82f6, transparent);
-        }
-        
-        .nav-blur {
-            backdrop-filter: blur(12px);
-        }
-        
-        .dark .nav-blur {
-            background: rgba(10, 10, 15, 0.8);
-        }
-        
-        .light .nav-blur, html:not(.dark) .nav-blur {
-            background: rgba(255, 255, 255, 0.8);
-        }
-        
-        @keyframes shimmer {
-            100% {
-                left: 100%;
-            }
-        }
-        
-        .typing-cursor::after {
-            content: '|';
-            animation: blink 1s infinite;
-        }
-        
-        @keyframes blink {
-            0%, 50% { opacity: 1; }
-            51%, 100% { opacity: 0; }
-        }
-        
-        .particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: #8b5cf6;
-            border-radius: 50%;
-            pointer-events: none;
-            animation: particle-float 3s ease-out forwards;
-        }
-        
-        @keyframes particle-float {
-            0% {
-                transform: translateY(0) scale(1);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100px) scale(0);
-                opacity: 0;
-            }
-        }
-        
-        .reveal {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.6s ease-out;
-        }
-        
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        .stagger-1 { transition-delay: 0.1s; }
-        .stagger-2 { transition-delay: 0.2s; }
-        .stagger-3 { transition-delay: 0.3s; }
-        .stagger-4 { transition-delay: 0.4s; }
-        .stagger-5 { transition-delay: 0.5s; }
-        .stagger-6 { transition-delay: 0.6s; }
-        
-        /* Theme Toggle Switch */
-        .theme-toggle {
-            position: relative;
-            width: 60px;
-            height: 30px;
-            background: #4B5563;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-        
-        .theme-toggle.active {
-            background: #8b5cf6;
-        }
-        
-        .theme-toggle-slider {
-            position: absolute;
-            top: 3px;
-            left: 3px;
-            width: 24px;
-            height: 24px;
-            background: white;
-            border-radius: 50%;
-            transition: transform 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-        }
-        
-        .theme-toggle.active .theme-toggle-slider {
-            transform: translateX(30px);
-        }
-        
-        .ripple {
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.5);
-            transform: scale(0);
-            animation: ripple-animation 0.6s ease-out;
-            pointer-events: none;
-        }
+/* =============================================
+   GLOBAL OVERFLOW PREVENTION — MUST BE FIRST
+   ============================================= */
+html, body {
+    overflow-x: hidden;
+    max-width: 100%;
+    box-sizing: border-box;
+}
 
-        @keyframes ripple-animation {
-            to {
-                transform: scale(4);
-                opacity: 0;
-            }
-        }
+*, *::before, *::after {
+    box-sizing: border-box;
+    min-width: 0;
+}
+
+section {
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100%;
+}
+
+.max-w-7xl,
+.max-w-6xl,
+.max-w-5xl {
+    width: 100%;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* =============================================
+   PAGE TRANSITION OVERLAY
+   ============================================= */
+#page-transition-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+    background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.45s cubic-bezier(0.77, 0, 0.175, 1);
+}
+#page-transition-overlay.entering {
+    transform: scaleX(1);
+    transform-origin: left;
+}
+#page-transition-overlay.leaving {
+    transform: scaleX(0);
+    transform-origin: right;
+}
+
+/* =============================================
+   GRADIENT TEXT / BG / BORDER
+   ============================================= */
+.gradient-text {
+    background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+.gradient-bg {
+    background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+}
+.gradient-border {
+    background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+    padding: 2px;
+    border-radius: 0.75rem;
+}
+
+.card-hover {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.card-hover:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 50px rgba(139, 92, 246, 0.3);
+}
+
+.blob {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.12;
+    animation: float 20s infinite ease-in-out;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+}
+.blob-purple { background: radial-gradient(circle, #8b5cf6, transparent); }
+.blob-blue   { background: radial-gradient(circle, #3b82f6, transparent); }
+
+/* =============================================
+   NAVBAR BLUR
+   ============================================= */
+.nav-blur {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+.dark .nav-blur {
+    background: rgba(10, 10, 15, 0.85);
+}
+html:not(.dark) .nav-blur {
+    background: rgba(255, 255, 255, 0.85);
+    box-shadow: 0 1px 20px rgba(0,0,0,0.08);
+}
+
+/* =============================================
+   ANIMATED NAV UNDERLINE SLIDER
+   ============================================= */
+.nav-link {
+    position: relative;
+}
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 0%;
+    height: 2px;
+    background: linear-gradient(90deg, #8b5cf6, #3b82f6);
+    border-radius: 2px;
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.nav-link:hover::after,
+.nav-link.active-link::after {
+    width: 100%;
+}
+.nav-link.active-link {
+    color: #8b5cf6 !important;
+}
+
+/* =============================================
+   TYPING / BLINK
+   ============================================= */
+@keyframes shimmer { 100% { left: 100%; } }
+.typing-cursor::after { content: '|'; animation: blink 1s infinite; }
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
+/* =============================================
+   PARTICLES
+   ============================================= */
+.particle {
+    position: absolute;
+    width: 4px; height: 4px;
+    background: #8b5cf6;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: particle-float 3s ease-out forwards;
+}
+@keyframes particle-float {
+    0%   { transform: translateY(0) scale(1); opacity: 1; }
+    100% { transform: translateY(-100px) scale(0); opacity: 0; }
+}
+
+/* =============================================
+   REVEAL ANIMATIONS
+   ============================================= */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s ease-out;
+}
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+.stagger-1 { transition-delay: 0.1s; }
+.stagger-2 { transition-delay: 0.2s; }
+.stagger-3 { transition-delay: 0.3s; }
+.stagger-4 { transition-delay: 0.4s; }
+.stagger-5 { transition-delay: 0.5s; }
+.stagger-6 { transition-delay: 0.6s; }
+
+/* =============================================
+   THEME TOGGLE SWITCH
+   ============================================= */
+.theme-toggle {
+    position: relative;
+    width: 60px; height: 30px;
+    background: #4B5563;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background 0.3s;
+    flex-shrink: 0;
+}
+.theme-toggle.active { background: #8b5cf6; }
+.theme-toggle-slider {
+    position: absolute;
+    top: 3px; left: 3px;
+    width: 24px; height: 24px;
+    background: white;
+    border-radius: 50%;
+    transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+}
+.theme-toggle.active .theme-toggle-slider {
+    transform: translateX(30px);
+}
+
+/* =============================================
+   RIPPLE
+   ============================================= */
+.ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.5);
+    transform: scale(0);
+    animation: ripple-animation 0.6s ease-out;
+    pointer-events: none;
+}
+@keyframes ripple-animation { to { transform: scale(4); opacity: 0; } }
+
+/* =============================================
+   HAMBURGER → X MORPH BUTTON
+   ============================================= */
+.hamburger-btn {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 44px; height: 44px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 8px;
+    border-radius: 10px;
+    transition: background 0.2s;
+    position: relative;
+    z-index: 1001;
+    color: inherit;
+}
+.hamburger-btn:hover { background: rgba(139,92,246,0.12); }
+
+.hamburger-line {
+    display: block;
+    width: 22px; height: 2px;
+    border-radius: 2px;
+    background: currentColor;
+    transition: all 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+    transform-origin: center;
+}
+.hamburger-line:nth-child(1) { margin-bottom: 5px; }
+.hamburger-line:nth-child(2) { margin-bottom: 5px; }
+
+.hamburger-btn.open .hamburger-line:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+    margin-bottom: 0;
+}
+.hamburger-btn.open .hamburger-line:nth-child(2) {
+    transform: scaleX(0);
+    opacity: 0;
+    margin-bottom: 0;
+}
+.hamburger-btn.open .hamburger-line:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+}
+
+/* =============================================
+   GLASSMORPHISM MOBILE MENU PANEL — FULL SCREEN
+   ============================================= */
+#mobile-menu {
+    display: none;
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100dvh;
+    z-index: 1000;
+    opacity: 0;
+    transform: scale(0.97);
+    transition: opacity 0.35s cubic-bezier(0.23, 1, 0.32, 1),
+                transform 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+    pointer-events: none;
+    overflow: hidden;
+}
+.dark #mobile-menu {
+    background: rgba(10, 10, 18, 0.92);
+    backdrop-filter: blur(32px) saturate(180%);
+    -webkit-backdrop-filter: blur(32px) saturate(180%);
+}
+html:not(.dark) #mobile-menu {
+    background: rgba(255, 255, 255, 0.93);
+    backdrop-filter: blur(32px) saturate(180%);
+    -webkit-backdrop-filter: blur(32px) saturate(180%);
+}
+#mobile-menu.open {
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: all;
+}
+
+#mobile-backdrop { display: none !important; }
+
+/* ── X Close Button (top-right) ── */
+.mobile-close-btn {
+    position: absolute;
+    top: 22px;
+    right: 22px;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: rgba(139, 92, 246, 0.1);
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10;
+    opacity: 0;
+    transform: rotate(-90deg) scale(0.6);
+    transition: opacity 0.3s ease 0.15s, transform 0.3s ease 0.15s, background 0.2s;
+}
+.dark .mobile-close-btn { color: #e5e7eb; }
+html:not(.dark) .mobile-close-btn { color: #374151; }
+
+.mobile-close-btn:hover {
+    background: rgba(139, 92, 246, 0.22);
+    transform: rotate(0deg) scale(1.1) !important;
+}
+#mobile-menu.open .mobile-close-btn {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+}
+
+/* ── Inner centered layout ── */
+.mobile-menu-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    gap: 4px;
+    padding-bottom: 80px;
+}
+
+/* ── Mobile nav links ── */
+.mobile-nav-link {
+    display: block;
+    text-align: center;
+    padding: 14px 40px;
+    border-radius: 16px;
+    font-size: 1.6rem;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    text-decoration: none;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.35s ease, transform 0.35s ease,
+                color 0.2s ease, background 0.2s ease;
+    width: 100%;
+    max-width: 320px;
+}
+.dark .mobile-nav-link { color: #c4c9d4; }
+html:not(.dark) .mobile-nav-link { color: #374151; }
+
+.mobile-nav-link:hover {
+    color: #8b5cf6;
+    background: rgba(139, 92, 246, 0.07);
+    transform: translateY(0) scale(1.03) !important;
+}
+.mobile-nav-link.active-link { color: #8b5cf6; }
+
+#mobile-menu.open .mobile-nav-link:nth-child(1) { opacity:1; transform:translateY(0); transition-delay:0.07s; }
+#mobile-menu.open .mobile-nav-link:nth-child(2) { opacity:1; transform:translateY(0); transition-delay:0.13s; }
+#mobile-menu.open .mobile-nav-link:nth-child(3) { opacity:1; transform:translateY(0); transition-delay:0.19s; }
+#mobile-menu.open .mobile-nav-link:nth-child(4) { opacity:1; transform:translateY(0); transition-delay:0.25s; }
+#mobile-menu.open .mobile-nav-link:nth-child(5) { opacity:1; transform:translateY(0); transition-delay:0.31s; }
+
+/* ── Theme row pinned to bottom ── */
+.mobile-theme-row {
+    position: absolute;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 22px;
+    border-radius: 50px;
+    opacity: 0;
+    transition: opacity 0.35s ease 0.38s;
+    background: rgba(139, 92, 246, 0.08);
+    border: 1px solid rgba(139, 92, 246, 0.18);
+    white-space: nowrap;
+}
+#mobile-menu.open .mobile-theme-row { opacity: 1; }
+.dark .mobile-theme-row { color: #d1d5db; }
+html:not(.dark) .mobile-theme-row { color: #374151; }
+
+.mobile-theme-label {
+    font-size: 0.88rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* ── Decorative blob ── */
+.mobile-menu-blob {
+    position: absolute;
+    width: 340px; height: 340px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(139,92,246,0.12), transparent 70%);
+    bottom: -100px; right: -100px;
+    pointer-events: none;
+    animation: float 14s ease-in-out infinite;
+}
+.mobile-menu-blob::after {
+    content: '';
+    position: absolute;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(59,130,246,0.1), transparent 70%);
+    top: -200px; left: -200px;
+    pointer-events: none;
+}
+
+
+/* =============================================
+   DESKTOP (> 1024px) — hide mobile elements
+   ============================================= */
+@media (min-width: 1025px) {
+    #mobile-backdrop,
+    #mobile-menu { display: none !important; }
+    .hamburger-btn { display: none !important; }
+}
+
+
+/* =============================================
+   ALL TABLETS & MOBILE (≤ 1024px) — shared base
+   ============================================= */
+@media (max-width: 1024px) {
+    .hamburger-btn { display: flex; }
+    #mobile-menu   { display: block; }
+    .desktop-nav   { display: none !important; }
+
+    nav, nav > *, nav .max-w-7xl {
+        max-width: 100vw;
+        overflow: hidden;
+    }
+    section, section > * {
+        max-width: 100vw;
+        overflow-x: hidden;
+    }
+    .grid { width: 100%; }
+    .flex-wrap { max-width: 100%; }
+    img { max-width: 100%; height: auto; }
+    .project-card, .card-hover { width: 100%; max-width: 100%; }
+}
+
+
+/* =============================================
+   iPAD MINI portrait  768px × 1024px
+   ============================================= */
+@media (min-width: 768px) and (max-width: 819px) {
+
+    nav .max-w-7xl {
+        padding-left: 2rem !important;
+        padding-right: 2rem !important;
+    }
+
+    section {
+        padding-left: 2rem !important;
+        padding-right: 2rem !important;
+    }
+
+    /* Hero — stacked portrait */
+    section#home {
+        padding-top: 6rem !important;
+        padding-bottom: 3.5rem !important;
+        min-height: 100svh;
+    }
+    section#home .max-w-6xl > div {
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 2rem !important;
+        text-align: center !important;
+    }
+    section#home h1 { font-size: 2.8rem !important; line-height: 1.15 !important; }
+    section#home p  { font-size: 1.05rem !important; text-align: center !important; }
+    section#home .flex.gap-4 { justify-content: center !important; }
+    #profile-image  { width: 210px !important; height: 210px !important; }
+
+    /* About */
+    section#about { padding-top: 5rem !important; padding-bottom: 5rem !important; }
+    section#about .max-w-7xl {
+        grid-template-columns: 1fr !important;
+        gap: 2rem !important;
+    }
+    section#about .max-w-7xl > div:first-child {
+        margin-left: 0 !important;
+        padding: 0 0.5rem !important;
+        text-align: center !important;
+    }
+    /* Stats — 3 cols */
+    section#about .grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 1rem !important;
+    }
+    section#about .max-w-5xl { max-width: 100% !important; margin: 0 !important; }
+
+    /* Skills — 2 cols */
+    section#skills .grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 1.25rem !important;
+    }
+    section#skills .grid > div:nth-child(3) {
+        grid-column: span 2 / span 2 !important;
+        max-width: 58% !important;
+        margin: 0 auto !important;
+    }
+
+    /* Projects — 2 cols */
+    section#projects .grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 1.25rem !important;
+    }
+    /* 4th card lone on row → center */
+    section#projects .grid > div:nth-child(4) {
+        grid-column: span 2 / span 2 !important;
+        max-width: 50% !important;
+        margin: 0 auto !important;
+    }
+
+    /* Contact — single col, centered */
+    section#contact .grid {
+        grid-template-columns: 1fr !important;
+        max-width: 560px !important;
+        margin: 0 auto !important;
+    }
+
+    /* Footer */
+    footer { padding-left: 2rem !important; padding-right: 2rem !important; }
+
+    /* Mobile menu on iPad Mini */
+    .mobile-nav-link {
+        font-size: 1.85rem !important;
+        padding: 15px 44px !important;
+        max-width: 360px !important;
+    }
+}
+
+
+/* =============================================
+   iPAD AIR  820px × 1180px  (portrait)
+   ============================================= */
+@media (min-width: 820px) and (max-width: 899px) {
+
+    nav .max-w-7xl {
+        padding-left: 2.5rem !important;
+        padding-right: 2.5rem !important;
+    }
+    section {
+        padding-left: 2.5rem !important;
+        padding-right: 2.5rem !important;
+    }
+
+    /* Hero — stacked but bigger */
+    section#home {
+        padding-top: 6rem !important;
+        padding-bottom: 4rem !important;
+    }
+    section#home .max-w-6xl > div {
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 2.5rem !important;
+        text-align: center !important;
+    }
+    section#home h1 { font-size: 3rem !important; }
+    section#home p  { font-size: 1.1rem !important; text-align: center !important; }
+    section#home .flex.gap-4 { justify-content: center !important; }
+    #profile-image  { width: 230px !important; height: 230px !important; }
+
+    /* About */
+    section#about .max-w-7xl {
+        grid-template-columns: 1fr !important;
+        gap: 2.5rem !important;
+    }
+    section#about .max-w-7xl > div:first-child {
+        margin-left: 0 !important;
+        padding: 0 1rem !important;
+        text-align: center !important;
+    }
+    section#about .grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+    }
+    section#about .max-w-5xl { max-width: 100% !important; margin: 0 !important; }
+
+    /* Skills — 3 cols on iPad Air portrait */
+    section#skills .grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 1.25rem !important;
+    }
+    section#skills .grid > div:nth-child(3) {
+        grid-column: auto !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+    }
+
+    /* Projects — 2 cols */
+    section#projects .grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 1.5rem !important;
+    }
+    section#projects .grid > div:nth-child(4) {
+        grid-column: span 2 / span 2 !important;
+        max-width: 50% !important;
+        margin: 0 auto !important;
+    }
+
+    /* Contact — single col, wider */
+    section#contact .grid {
+        grid-template-columns: 1fr !important;
+        max-width: 600px !important;
+        margin: 0 auto !important;
+    }
+
+    footer { padding-left: 2.5rem !important; padding-right: 2.5rem !important; }
+
+    .mobile-nav-link {
+        font-size: 2rem !important;
+        padding: 16px 48px !important;
+        max-width: 380px !important;
+    }
+}
+
+
+/* =============================================
+   iPAD PRO 11"  900px – 1024px  (portrait)
+   ============================================= */
+@media (min-width: 900px) and (max-width: 1024px) {
+
+    nav .max-w-7xl {
+        padding-left: 3rem !important;
+        padding-right: 3rem !important;
+    }
+    section {
+        padding-left: 3rem !important;
+        padding-right: 3rem !important;
+    }
+
+    /* Hero — side by side */
+    section#home {
+        padding-top: 6.5rem !important;
+        padding-bottom: 4rem !important;
+    }
+    section#home .max-w-6xl > div {
+        flex-direction: row !important;
+        align-items: center !important;
+        gap: 3rem !important;
+        text-align: left !important;
+    }
+    section#home .flex.gap-4 { justify-content: flex-start !important; }
+    section#home h1 { font-size: 3.4rem !important; line-height: 1.1 !important; }
+    section#home p  { font-size: 1.1rem !important; text-align: justify !important; }
+    #profile-image  { width: 250px !important; height: 250px !important; }
+
+    /* About — 2-col layout */
+    section#about .max-w-7xl {
+        grid-template-columns: 1fr 1fr !important;
+        align-items: start !important;
+        gap: 2.5rem !important;
+    }
+    section#about .max-w-7xl > div:first-child {
+        margin-left: 0 !important;
+        padding: 0 !important;
+        text-align: left !important;
+    }
+    section#about .max-w-7xl > div:first-child p {
+        text-align: justify !important;
+    }
+    /* Stats stacked vertically in right column */
+    section#about .grid {
+        grid-template-columns: 1fr !important;
+        gap: 1rem !important;
+    }
+    section#about .max-w-5xl { max-width: 100% !important; margin: 0 !important; }
+
+    /* Skills — 3 cols */
+    section#skills .grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 1.25rem !important;
+    }
+    section#skills .grid > div:nth-child(3) {
+        grid-column: auto !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+    }
+
+    /* Projects — 2 cols */
+    section#projects .grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 1.5rem !important;
+    }
+    section#projects .grid > div:nth-child(4) {
+        grid-column: span 2 / span 2 !important;
+        max-width: 50% !important;
+        margin: 0 auto !important;
+    }
+
+    /* Contact — 2 cols */
+    section#contact .grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        max-width: 100% !important;
+        gap: 2rem !important;
+    }
+
+    footer {
+        padding-left: 3rem !important;
+        padding-right: 3rem !important;
+    }
+    footer span {
+        flex-direction: row !important;
+        justify-content: space-between !important;
+    }
+
+    .mobile-nav-link {
+        font-size: 2rem !important;
+        padding: 16px 52px !important;
+        max-width: 420px !important;
+    }
+    .mobile-theme-row { bottom: 40px !important; }
+}
+
+
+/* =============================================
+   ALL TABLETS LANDSCAPE  768px–1024px landscape
+   ============================================= */
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+
+    section#home {
+        min-height: auto !important;
+        padding-top: 5rem !important;
+        padding-bottom: 3rem !important;
+    }
+    section#home .max-w-6xl > div {
+        flex-direction: row !important;
+        align-items: center !important;
+        gap: 2rem !important;
+        text-align: left !important;
+    }
+    section#home .flex.gap-4 { justify-content: flex-start !important; }
+    section#home p { text-align: justify !important; }
+    section#home h1 { font-size: 2.8rem !important; }
+    #profile-image  { width: 200px !important; height: 200px !important; }
+
+    /* About side by side in landscape */
+    section#about .max-w-7xl {
+        grid-template-columns: 1fr 1fr !important;
+    }
+    section#about .max-w-7xl > div:first-child {
+        text-align: left !important;
+        margin-left: 0 !important;
+        padding: 0 !important;
+    }
+    section#about .grid {
+        grid-template-columns: 1fr !important;
+    }
+    section#about .max-w-5xl { max-width: 100% !important; margin: 0 !important; }
+
+    /* Full 3 cols for skills in landscape */
+    section#skills .grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+    }
+    section#skills .grid > div:nth-child(3) {
+        grid-column: auto !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+    }
+
+    /* Contact 2 cols in landscape */
+    section#contact .grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        max-width: 100% !important;
+    }
+
+    footer span {
+        flex-direction: row !important;
+        justify-content: space-between !important;
+    }
+}
+
+
+/* =============================================
+   iPAD PRO 12.9"  landscape  ≈ 1180px–1366px
+   (mostly desktop, minor padding refinements)
+   ============================================= */
+@media (min-width: 1180px) and (max-width: 1366px) {
+    .max-w-7xl,
+    .max-w-6xl {
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+}
+
+
+/* =============================================
+   GENERIC SMALL TABLET  600px – 767px
+   (Android tablets, Kindle Fire, small Windows)
+   ============================================= */
+@media (min-width: 600px) and (max-width: 767px) {
+
+    section {
+        padding-left: 1.5rem !important;
+        padding-right: 1.5rem !important;
+        padding-top: 4.5rem !important;
+        padding-bottom: 4.5rem !important;
+    }
+
+    section#home h1 { font-size: 2.4rem !important; line-height: 1.2 !important; }
+    section#home p  { font-size: 1.05rem !important; }
+    #profile-image  { width: 190px !important; height: 190px !important; }
+
+    section#about .max-w-7xl {
+        grid-template-columns: 1fr !important;
+    }
+    section#about .max-w-7xl > div:first-child {
+        margin-left: 0 !important;
+        padding: 0 !important;
+        text-align: center !important;
+    }
+    section#about .grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+    }
+    section#about .max-w-5xl { max-width: 100% !important; margin: 0 !important; }
+
+    section#skills .grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+    section#skills .grid > div:nth-child(3) {
+        grid-column: span 2 / span 2 !important;
+        max-width: 60% !important;
+        margin: 0 auto !important;
+    }
+
+    section#projects .grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+    section#projects .grid > div:nth-child(4) {
+        grid-column: span 2 / span 2 !important;
+        max-width: 50% !important;
+        margin: 0 auto !important;
+    }
+
+    section#contact .grid {
+        grid-template-columns: 1fr !important;
+        max-width: 500px !important;
+        margin: 0 auto !important;
+    }
+
+    .mobile-nav-link {
+        font-size: 1.5rem !important;
+        padding: 13px 32px !important;
+    }
+}
+
+
+/* =============================================
+   MOBILE  (< 600px)
+   ============================================= */
+@media (max-width: 599px) {
+
+    section {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+        padding-top: 4rem !important;
+        padding-bottom: 4rem !important;
+    }
+
+    nav .max-w-7xl {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+
+    section#home h1 { font-size: 2rem !important; line-height: 1.2; }
+    section#home p  { font-size: 1rem !important; }
+
+    #profile-image,
+    .gradient-border { max-width: calc(100vw - 4rem) !important; }
+    #profile-image   { width: 160px !important; height: 160px !important; }
+
+    section#about .max-w-7xl > div:first-child {
+        margin-left: 0 !important;
+        padding: 0 !important;
+    }
+    section#about .grid { grid-template-columns: 1fr !important; }
+    section#about .max-w-5xl { max-width: 100% !important; margin: 0 !important; }
+
+    section#skills .grid { grid-template-columns: 1fr !important; }
+    section#skills .grid > div:nth-child(3) {
+        grid-column: auto !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+    }
+
+    section#projects .grid { grid-template-columns: 1fr !important; }
+    section#projects .grid > div:nth-child(4) {
+        grid-column: auto !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+    }
+
+    section#contact .grid { grid-template-columns: 1fr !important; }
+
+    footer .flex,
+    footer span {
+        flex-direction: column !important;
+        align-items: center !important;
+        text-align: center !important;
+        gap: 0.5rem;
+    }
+
+    .mobile-nav-link {
+        font-size: 1.35rem !important;
+        padding: 12px 24px !important;
+    }
+
+    .bg-accent-purple\/10,
+    .bg-accent-blue\/10 {
+        word-break: break-word;
+        overflow-wrap: break-word;
+    }
+
+    input, textarea, button { max-width: 100% !important; }
+}
+
+
+/* =============================================
+   PROJECT CARD IMAGE — consistent tablet height
+   ============================================= */
+@media (min-width: 600px) {
+    .project-card .bg-gradient-to-br {
+        min-height: 180px;
+        overflow: hidden;
+    }
+    .project-card .bg-gradient-to-br img {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+        display: block;
+    }
+}
+
+
+/* =============================================
+   SAFE AREA INSETS  (iPad notch / home indicator)
+   ============================================= */
+@supports (padding: max(0px)) {
+    nav .max-w-7xl {
+        padding-left: max(1.5rem, env(safe-area-inset-left));
+        padding-right: max(1.5rem, env(safe-area-inset-right));
+    }
+    section {
+        padding-left: max(1rem, env(safe-area-inset-left));
+        padding-right: max(1rem, env(safe-area-inset-right));
+    }
+    footer {
+        padding-bottom: max(2rem, env(safe-area-inset-bottom));
+    }
+}
